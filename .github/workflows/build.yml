@@ -1,0 +1,22 @@
+name: Build APK
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pasang toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-21-jdk-headless aapt apksigner dalvik-exchange libandroid-23-java zipalign
+      - name: Build
+        run: bash build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: USB-Flasher-apk
+          path: USB-Flasher.apk
